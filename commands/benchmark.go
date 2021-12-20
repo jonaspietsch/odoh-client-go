@@ -218,6 +218,7 @@ func responseHandler(numberOfChannels int, responseChannel chan experimentResult
 
 func getTickTriggerTiming(requestsPerMinute int) float64 {
 	intervalDuration := time.Minute.Seconds() / float64(requestsPerMinute)
+	//fmt.Printf("%f\n", intervalDuration)
 	return intervalDuration
 }
 
@@ -257,8 +258,8 @@ func benchmarkClient(c *cli.Context) {
 	if len(proxy) < 0 {
 		log.Fatal("Missing target parameter")
 	}
-	dnsTypeString := c.String("dnstype")
-	dnsMessageType := dnsQueryStringToType(dnsTypeString)
+	//dnsTypeString := c.String("dnstype")
+	//dnsMessageType := dnsQueryStringToType(dnsTypeString)
 
 	tickTrigger := getTickTriggerTiming(int(requestPerMinute))
 	hostnames, err := readDomainsFromFile(filepath, filterCount)
@@ -304,8 +305,8 @@ func benchmarkClient(c *cli.Context) {
 				}
 				e := experiment{
 					ExperimentID:    experimentID,
-					Hostname:        hostname,
-					DNSType:         dnsMessageType,
+					Hostname:        hostname[0],
+					DNSType:         dnsQueryStringToType(hostname[1]),
 					TargetPublicKey: targetConfigContents,
 					Target:          target,
 					Proxy:           proxy,
